@@ -86,12 +86,6 @@
                          0 0 15px rgba(245, 124, 0, 0.5), 
                          0 0 20px rgba(245, 124, 0, 0.5);
         }
-
-        /* Puzzle (Tetris) section */
-        #tetris-canvas {
-            background: rgba(15, 32, 20, 0.95);
-            border-radius: 0.75rem;
-        }
     </style>
 </head>
 <body class="text-gray-800">
@@ -187,58 +181,52 @@
             </div>
         </section>
 
-        <!-- PUZZLE / TETRIS VALÚ -->
+        <!-- JUEGO DE MEMORIA VALÚ (PARES DE CHOCOBANANAS) -->
         <section id="puzzle-valu" class="py-12 bg-black/40 border-t border-white/10">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-8">
-                    <p class="text-xs tracking-[0.3em] uppercase text-brand-orange mb-2 font-semibold">
-                        Juego VALÚ
-                    </p>
-                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-2">
-                        Juega mientras esperas tu pedido 🍌🎮
-                    </h2>
-                    <p class="text-sm md:text-base text-gray-200 max-w-2xl mx-auto">
-                        Haz líneas, suma puntos y pasa el tiempo mientras preparamos tus chocobananas.  
-                        Ideal para Valú Lovers impacientes 😋
-                    </p>
-                </div>
-
-                <div class="max-w-md mx-auto bg-white/95 rounded-3xl shadow-2xl p-5 md:p-6">
-                    <div class="flex items-center justify-between gap-4 text-xs md:text-sm text-gray-700 mb-3">
-                        <span class="flex items-center gap-2">
-                            <i class="fa-solid fa-star text-brand-orange"></i>
-                            Puntos: <span id="tetris-score">0</span>
-                        </span>
-                        <span class="flex items-center gap-2">
-                            <i class="fa-solid fa-layer-group text-brand-green"></i>
-                            Filas: <span id="tetris-lines">0</span>
-                        </span>
-                        <button id="tetris-restart" type="button"
-                                class="px-4 py-2 bg-brand-orange text-white rounded-full text-xs md:text-sm font-semibold flex items-center gap-2 hover:bg-brand-orange-dark transition">
-                            <i class="fa-solid fa-rotate-right"></i> Jugar / Reiniciar
-                        </button>
-                    </div>
-
-                    <canvas id="tetris-canvas" width="300" height="480" class="border border-emerald-700"></canvas>
-
-                    <div class="flex flex-wrap justify-center gap-2 w-full mt-3">
-                        <button id="tetris-left" type="button"
-                                class="px-4 py-2 rounded-full bg-brand-green text-white text-lg hover:bg-[#145a1a]">⬅️</button>
-                        <button id="tetris-rotate" type="button"
-                                class="px-4 py-2 rounded-full bg-brand-green text-white text-lg hover:bg-[#145a1a]">🔄</button>
-                        <button id="tetris-down" type="button"
-                                class="px-4 py-2 rounded-full bg-brand-green text-white text-lg hover:bg-[#145a1a]">⬇️</button>
-                        <button id="tetris-right" type="button"
-                                class="px-4 py-2 rounded-full bg-brand-green text-white text-lg hover:bg-[#145a1a]">➡️</button>
-                    </div>
-
-                    <p class="text-[10px] md:text-xs text-gray-600 text-center mt-2">
-                        En celular: toca <strong>izquierda / derecha</strong> del juego para mover,  
-                        arriba para <strong>girar</strong> y el centro para <strong>bajar</strong>.  
-                        O usa los botones de abajo.
-                    </p>
-                </div>
+          <div class="container mx-auto px-6">
+            <div class="text-center mb-8">
+              <p class="text-xs tracking-[0.3em] uppercase text-brand-orange mb-2 font-semibold">
+                Juego VALÚ
+              </p>
+              <h2 class="text-3xl md:text-4xl font-bold text-white mb-2">
+                Encuentra los pares de Chocobananas 🍌🧠
+              </h2>
+              <p class="text-sm md:text-base text-gray-200 max-w-2xl mx-auto">
+                Da clic en las cartas, recuerda las posiciones y encuentra las parejas iguales.  
+                Un juego dulce mientras esperas tu pedido.
+              </p>
             </div>
+
+            <!-- CONTENEDOR DEL JUEGO -->
+            <div class="max-w-md mx-auto bg-white/95 rounded-3xl shadow-2xl p-5 md:p-6 flex flex-col items-center">
+
+              <!-- Estadísticas y botón -->
+              <div class="flex items-center justify-between w-full text-xs md:text-sm text-gray-700 mb-4">
+                <span class="flex items-center gap-2">
+                  <i class="fa-solid fa-shuffle text-brand-orange"></i>
+                  Movimientos: <span id="memory-moves">0</span>
+                </span>
+                <span class="flex items-center gap-2">
+                  <i class="fa-solid fa-heart text-brand-green"></i>
+                  Pares: <span id="memory-pairs">0</span>/6
+                </span>
+                <button id="memory-restart" type="button"
+                        class="px-4 py-2 bg-brand-orange text-white rounded-full text-xs md:text-sm font-semibold flex items-center gap-2 hover:bg-brand-orange-dark transition">
+                  <i class="fa-solid fa-rotate-right"></i> Reiniciar
+                </button>
+              </div>
+
+              <!-- GRID DEL JUEGO -->
+              <div id="memory-grid" class="grid grid-cols-3 sm:grid-cols-4 gap-3 w-full">
+                <!-- Las cartas se generan por JavaScript -->
+              </div>
+
+              <p class="text-[10px] md:text-xs text-gray-600 text-center mt-3">
+                Toca una carta para revelar la Chocobanana.  
+                Encuentra su par antes de que tu memoria se derrita 😋
+              </p>
+            </div>
+          </div>
         </section>
     </main>
 
@@ -435,6 +423,17 @@
                             Bot & Landing
                         </a>
                     </p>
+                </div>
+
+                <!-- CTA NEÓN CLTech Solutions -->
+                <div class="mt-6 flex justify-center">
+                    <a href="https://www.cltechsolutions.com" target="_blank"
+                       class="inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm md:text-base font-extrabold
+                              bg-teal-400 text-slate-900 hover:bg-teal-300
+                              shadow-[0_0_15px_rgba(45,212,191,0.9)] animate-pulse uppercase tracking-[0.15em]">
+                        <span>🌐 Página de ventas elaborada por</span>
+                        <span>CLTech Solutions</span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -790,279 +789,185 @@
     });
     </script>
 
-    <!-- SCRIPT TETRIS / PUZZLE -->
+    <!-- SCRIPT JUEGO DE MEMORIA VALÚ -->
     <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const canvas  = document.getElementById("tetris-canvas");
-      const scoreEl = document.getElementById("tetris-score");
-      const linesEl = document.getElementById("tetris-lines");
-      const restart = document.getElementById("tetris-restart");
+    document.addEventListener('DOMContentLoaded', () => {
+      const grid = document.getElementById('memory-grid');
+      const movesEl = document.getElementById('memory-moves');
+      const pairsEl = document.getElementById('memory-pairs');
+      const restartBtn = document.getElementById('memory-restart');
 
-      const btnLeft   = document.getElementById("tetris-left");
-      const btnRight  = document.getElementById("tetris-right");
-      const btnRotate = document.getElementById("tetris-rotate");
-      const btnDown   = document.getElementById("tetris-down");
+      if (!grid || !movesEl || !pairsEl || !restartBtn) return;
 
-      if (!canvas || !scoreEl || !linesEl || !restart) return;
-
-      const ctx = canvas.getContext("2d");
-
-      const COLS  = 10;
-      const ROWS  = 20;
-      const BLOCK = 24;
-
-      canvas.width  = COLS * BLOCK;
-      canvas.height = ROWS * BLOCK;
-
-      const COLORS = [
-        null,
-        "#f97316",
-        "#22c55e",
-        "#3b82f6",
-        "#eab308",
-        "#ec4899",
-        "#8b5cf6",
-        "#facc15",
+      // 6 imágenes de Chocobananas (pares)
+      const baseCards = [
+        {
+          id: 1,
+          name: 'Valú Mixta',
+          img: 'https://i.postimg.cc/wBJcZcY3/1000670551-removebg-preview.webp'
+        },
+        {
+          id: 2,
+          name: 'Valú Black&White',
+          img: 'https://i.postimg.cc/BnRBm7yd/1000670554-removebg-preview.webp'
+        },
+        {
+          id: 3,
+          name: 'Valú Tropi Coco',
+          img: 'https://i.postimg.cc/CMJc3QV7/1000670548-removebg-preview.webp'
+        },
+        {
+          id: 4,
+          name: 'Galleta Oreo',
+          img: 'https://i.postimg.cc/rygGBw3G/IMG-20250809-170227-751-2-removebg-preview.webp'
+        },
+        {
+          id: 5,
+          name: 'Maní',
+          img: 'https://i.postimg.cc/VL69mcPx/IMG-20250809-165122-573-2-removebg-preview.webp'
+        },
+        {
+          id: 6,
+          name: 'Valú Fresa',
+          img: 'https://i.postimg.cc/j2qHDpwJ/1000670557-removebg-preview.webp'
+        }
       ];
 
-      const SHAPES = {
-        I: [[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]],
-        J: [[2,0,0],[2,2,2],[0,0,0]],
-        L: [[0,0,3],[3,3,3],[0,0,0]],
-        O: [[4,4],[4,4]],
-        S: [[0,5,5],[5,5,0],[0,0,0]],
-        T: [[0,6,0],[6,6,6],[0,0,0]],
-        Z: [[7,7,0],[0,7,7],[0,0,0]],
-      };
+      let deck = [];
+      let firstCard = null;
+      let secondCard = null;
+      let lockBoard = false;
+      let moves = 0;
+      let pairs = 0;
 
-      function matrix(w, h) {
-        return Array.from({ length: h }, () => Array(w).fill(0));
-      }
-
-      let board = matrix(COLS, ROWS);
-      let piece = null;
-      let pos   = null;
-      let drop  = 0;
-      let last  = 0;
-      let score = 0;
-      let lines = 0;
-      let over  = false;
-
-      function randomPiece() {
-        const keys = Object.keys(SHAPES);
-        const shape = SHAPES[keys[(Math.random()*keys.length)|0]];
-        return shape.map(r => [...r]);
-      }
-
-      function resetPiece() {
-        piece = randomPiece();
-        pos = { x: (COLS/2 | 0) - (piece[0].length/2 | 0), y: 0 };
-        if (collide()) over = true;
-      }
-
-      function collide() {
-        for (let y=0; y<piece.length; y++){
-          for (let x=0; x<piece[y].length; x++){
-            if (piece[y][x] !== 0){
-              const nx = pos.x + x;
-              const ny = pos.y + y;
-
-              if (nx < 0 || nx >= COLS || ny >= ROWS || board[ny][nx] !== 0) {
-                return true;
-              }
-            }
-          }
+      function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
         }
-        return false;
+        return array;
       }
 
-      function merge() {
-        for (let y=0; y<piece.length; y++){
-          for (let x=0; x<piece[y].length; x++){
-            if (piece[y][x] !== 0) {
-              board[pos.y + y][pos.x + x] = piece[y][x];
-            }
-          }
-        }
+      function createDeck() {
+        const duplicated = [...baseCards, ...baseCards].map((card, index) => ({
+          ...card,
+          uid: index + '_' + card.id
+        }));
+        return shuffle(duplicated);
       }
 
-      function rotate(m) {
-        return m[0].map((_, i) => m.map(r => r[i]).reverse());
+      function renderGrid() {
+        grid.innerHTML = '';
+        deck.forEach((cardObj, index) => {
+          const card = document.createElement('button');
+          card.type = 'button';
+          card.className = 'memory-card bg-emerald-950/90 rounded-xl p-2 flex items-center justify-center shadow-lg border border-emerald-700 cursor-pointer aspect-[3/4] relative';
+          card.dataset.id = cardObj.id;
+          card.dataset.uid = cardObj.uid;
+          card.dataset.index = index;
+          card.innerHTML = `
+            <img src="${cardObj.img}"
+                 alt="${cardObj.name}"
+                 class="w-full h-full object-contain hidden pointer-events-none"
+                 onerror="this.onerror=null;this.src='https://placehold.co/200x260/FFF3E0/3D2B1F?text=VALU';">
+            <span class="placeholder absolute inset-0 flex items-center justify-center text-2xl pointer-events-none">
+              🍌
+            </span>
+          `;
+          grid.appendChild(card);
+        });
       }
 
-      function rotatePiece() {
-        const r = rotate(piece);
-        const prev = piece;
-        piece = r;
-        if (collide()) piece = prev;
+      function resetGame() {
+        deck = createDeck();
+        firstCard = null;
+        secondCard = null;
+        lockBoard = false;
+        moves = 0;
+        pairs = 0;
+        movesEl.textContent = moves;
+        pairsEl.textContent = pairs;
+        renderGrid();
       }
 
-      function clearLines() {
-        let cleared = 0;
-
-        outer: for (let y = ROWS - 1; y >= 0; y--) {
-          for (let x = 0; x < COLS; x++){
-            if (board[y][x] === 0) continue outer;
-          }
-          board.splice(y, 1);
-          board.unshift(Array(COLS).fill(0));
-          cleared++;
-          y++;
-        }
-
-        if (cleared > 0){
-          lines += cleared;
-          score += [0,100,250,500,800][cleared];
-          scoreEl.textContent = score;
-          linesEl.textContent = lines;
+      function revealCard(card) {
+        const img = card.querySelector('img');
+        const placeholder = card.querySelector('.placeholder');
+        if (img && placeholder) {
+          img.classList.remove('hidden');
+          placeholder.classList.add('hidden');
         }
       }
 
-      function draw() {
-        ctx.fillStyle = "#0f172a";
-        ctx.fillRect(0,0,canvas.width, canvas.height);
-
-        for (let y=0; y<ROWS; y++){
-          for (let x=0; x<COLS; x++){
-            drawBlock(x,y,board[y][x]);
-          }
-        }
-
-        if (piece) {
-          for (let y=0; y<piece.length; y++){
-            for (let x=0; x<piece[y].length; x++){
-              if (piece[y][x] !== 0){
-                drawBlock(x+pos.x, y+pos.y, piece[y][x]);
-              }
-            }
-          }
+      function hideCard(card) {
+        const img = card.querySelector('img');
+        const placeholder = card.querySelector('.placeholder');
+        if (img && placeholder) {
+          img.classList.add('hidden');
+          placeholder.classList.remove('hidden');
         }
       }
 
-      function drawBlock(x,y,colorIndex){
-        if (!colorIndex) return;
-        ctx.fillStyle = COLORS[colorIndex];
-        ctx.fillRect(x*BLOCK, y*BLOCK, BLOCK, BLOCK);
-        ctx.strokeStyle = "black";
-        ctx.strokeRect(x*BLOCK, y*BLOCK, BLOCK, BLOCK);
+      function markAsMatched(card) {
+        card.classList.add('opacity-60', 'cursor-default');
+        card.disabled = true;
       }
 
-      function fall(time=0) {
-        if (over){
-          draw();
-          return;
-        }
-        const delta = time - last;
-        last = time;
-        drop += delta;
+      function handleCardClick(e) {
+        const card = e.target.closest('.memory-card');
+        if (!card || lockBoard) return;
+        if (card === firstCard) return; // No clicar dos veces la misma
 
-        if (drop > 500) {
-          pos.y++;
-          if (collide()) {
-            pos.y--;
-            merge();
-            clearLines();
-            resetPiece();
-          }
-          drop = 0;
-        }
+        // Si ya está descubierta y deshabilitada, no hacer nada
+        if (card.disabled) return;
 
-        draw();
-        requestAnimationFrame(fall);
-      }
+        revealCard(card);
 
-      function moveLeft() {
-        if (!piece || over) return;
-        pos.x--;
-        if (collide()) pos.x++;
-      }
-
-      function moveRight() {
-        if (!piece || over) return;
-        pos.x++;
-        if (collide()) pos.x--;
-      }
-
-      function softDrop() {
-        if (!piece || over) return;
-        pos.y++;
-        if (collide()) {
-          pos.y--;
-          merge();
-          clearLines();
-          resetPiece();
-        }
-        drop = 0;
-      }
-
-      document.addEventListener("keydown", e => {
-        if (!piece || over) return;
-
-        if (e.key === "ArrowLeft") {
-          moveLeft();
-        }
-        else if (e.key === "ArrowRight") {
-          moveRight();
-        }
-        else if (e.key === "ArrowDown") {
-          softDrop();
-        }
-        else if (e.key === "ArrowUp") {
-          rotatePiece();
-        }
-      });
-
-      if (btnLeft)   btnLeft.addEventListener("click", () => moveLeft());
-      if (btnRight)  btnRight.addEventListener("click", () => moveRight());
-      if (btnDown)   btnDown.addEventListener("click", () => softDrop());
-      if (btnRotate) btnRotate.addEventListener("click", () => rotatePiece());
-
-      function handleCanvasTap(clientX, clientY) {
-        if (!piece || over) return;
-
-        const rect = canvas.getBoundingClientRect();
-        const x = clientX - rect.left;
-        const y = clientY - rect.top;
-
-        const thirdW = rect.width / 3;
-        const topZone = rect.height * 0.3;
-
-        if (y < topZone) {
-          rotatePiece();
+        if (!firstCard) {
+          firstCard = card;
           return;
         }
 
-        if (x < thirdW) {
-          moveLeft();
-        } else if (x > 2 * thirdW) {
-          moveRight();
+        secondCard = card;
+        moves++;
+        movesEl.textContent = moves;
+        lockBoard = true;
+
+        const isMatch = firstCard.dataset.id === secondCard.dataset.id;
+
+        if (isMatch) {
+          markAsMatched(firstCard);
+          markAsMatched(secondCard);
+          pairs++;
+          pairsEl.textContent = pairs;
+          resetBoardState();
+
+          // Si ganó (6 pares)
+          if (pairs === baseCards.length) {
+            setTimeout(() => {
+              alert(`¡Ganaste! 🥳 Encontraste todos los pares en ${moves} movimientos.`);
+            }, 300);
+          }
         } else {
-          softDrop();
+          setTimeout(() => {
+            hideCard(firstCard);
+            hideCard(secondCard);
+            resetBoardState();
+          }, 800);
         }
       }
 
-      canvas.addEventListener("click", (e) => {
-        handleCanvasTap(e.clientX, e.clientY);
-      });
+      function resetBoardState() {
+        [firstCard, secondCard] = [null, null];
+        lockBoard = false;
+      }
 
-      canvas.addEventListener("touchstart", (e) => {
-        const touch = e.touches[0];
-        if (!touch) return;
-        handleCanvasTap(touch.clientX, touch.clientY);
-      }, { passive: true });
+      // Eventos
+      grid.addEventListener('click', handleCardClick);
+      restartBtn.addEventListener('click', resetGame);
 
-      restart.addEventListener("click", () => {
-        board = matrix(COLS, ROWS);
-        score = 0;
-        lines = 0;
-        over  = false;
-        scoreEl.textContent = "0";
-        linesEl.textContent = "0";
-        resetPiece();
-      });
-
-      resetPiece();
-      fall();
+      // Inicializar juego
+      resetGame();
     });
     </script>
 </body>
