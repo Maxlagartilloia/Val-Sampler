@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VALÚ Chocobananas - Menú y Pedidos</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts: Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #1B5E20; /* Darker Brand Green */
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(245, 124, 0, 0.1), transparent 50%),
+                radial-gradient(circle at 85% 30%, rgba(134, 239, 172, 0.1), transparent 50%),
+                radial-gradient(circle at 25% 10%, rgba(255, 255, 255, 0.1) 1px, transparent 2px),
+                radial-gradient(circle at 75% 80%, rgba(255, 255, 255, 0.1) 1px, transparent 2px),
+                radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08) 1px, transparent 2px),
+                radial-gradient(circle at 90% 15%, rgba(255, 255, 255, 0.09) 1px, transparent 2px),
+                radial-gradient(circle at 10% 85%, rgba(255, 255, 255, 0.1) 1px, transparent 2px);
+            background-size: 100% 100%, 100% 100%, 50px 50px, 70px 70px, 60px 60px, 80px 80px, 40px 40px;
+            overflow-x: hidden;
+            color: #4a4a4a;
+        }
+
+        /* Chocobanana floating effect */
+        .chocobanana-fall {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .chocobanana-fall div {
+            position: absolute;
+            top: -200px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            animation: fall-down linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes fall-down {
+            0% { transform: translateY(0) rotate(-20deg); opacity: 0; }
+            10% { opacity: 0.7; }
+            90% { opacity: 0.7; }
+            100% { transform: translateY(120vh) rotate(60deg); opacity: 0; }
+        }
+
+        .chocobanana-fall div:nth-child(1) { left: 10%; width: 120px; height: 120px; background-image: url('https://i.postimg.cc/wBJcZcY3/1000670551-removebg-preview.webp'); animation-duration: 22s; animation-delay: 0s; }
+        .chocobanana-fall div:nth-child(2) { left: 85%; width: 150px; height: 150px; background-image: url('https://i.postimg.cc/Kz2r2kmf/1000670552-removebg-preview.webp'); animation-duration: 18s; animation-delay: 3s; }
+        .chocobanana-fall div:nth-child(3) { left: 50%; width: 100px; height: 100px; background-image: url('https://i.postimg.cc/Hkrt41Sw/1000670553-removebg-preview.webp'); animation-duration: 25s; animation-delay: 8s; }
+        .chocobanana-fall div:nth-child(4) { left: 30%; width: 140px; height: 140px; background-image: url('https://i.postimg.cc/vBrgL0FL/1000670549-removebg-preview-1.webp'); animation-duration: 16s; animation-delay: 12s; }
+        .chocobanana-fall div:nth-child(5) { left: 65%; width: 110px; height: 110px; background-image: url('https://i.postimg.cc/76n1YH6k/1000670555-removebg-preview.webp'); animation-duration: 28s; animation-delay: 15s; }
+        
+        /* Brand Colors */
+        .brand-green-text { color: #2E7D32; }
+        .brand-orange-text { color: #F57C00; }
+        .brand-brown-text { color: #3D2B1F; }
+        .bg-brand-green { background-color: #2E7D32; }
+        .hover\:bg-brand-green-dark:hover { background-color: #1B5E20; }
+        .bg-brand-orange { background-color: #F57C00; }
+        .hover\:bg-brand-orange-dark:hover { background-color: #E65100; }
+        
+        /* Glossy text effect for the main headline */
+        .glossy-text {
+            text-shadow: 0 0 5px rgba(255,255,255,0.7), 
+                         0 0 10px rgba(255,255,255,0.7), 
+                         0 0 15px rgba(245, 124, 0, 0.5), 
+                         0 0 20px rgba(245, 124, 0, 0.5);
+        }
+
+        /* Puzzle (Tetris) section */
+        #tetris-canvas {
+            background: rgba(15, 32, 20, 0.95);
+            border-radius: 0.75rem;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="chocobanana-fall">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+
+    <header class="bg-white/95 backdrop-blur shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-0 md:py-1 flex justify-between items-center">
+            <a href="#" onclick="showPage('home')" class="flex items-center gap-3">
+                <img src="https://i.postimg.cc/66R0cb7k/305490667-575197724237113-2468008211469284987-n-1.webp"
+                     alt="Logo de VALÚ Chocobananas"
+                     class="h-[6rem] md:h-[8rem] w-auto transition-all ml-0 md:ml-4"
+                     onerror="this.onerror=null;this.src='https://placehold.co/96x96/FFF3E0/3D2B1F?text=V';">
+            </a>
+            <nav class="hidden md:flex items-center gap-6 font-semibold brand-brown-text">
+                <a href="#productos" class="hover:text-[#F57C00] transition-colors">Productos</a>
+                <a href="#experiencia" class="hover:text-[#F57C00] transition-colors">Experiencia</a>
+                <a href="#puzzle-valu" class="hover:text-[#F57C00] transition-colors">Juega</a>
+                <a href="#footer-contact" class="hover:text-[#F57C00] transition-colors">Contacto</a>
+            </nav>
+            <button id="cart-button" onclick="showPage('checkout')" class="relative bg-brand-orange text-white px-4 py-2 rounded-full font-bold hover:bg-brand-orange-dark transition-colors flex items-center gap-2">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="hidden sm:inline">Carrito</span>
+                <span id="cart-count" class="absolute -top-2 -right-2 bg-brand-green text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- HOME PAGE -->
+    <main id="home-page" class="relative z-10">
+        <!-- HERO con foto arriba + dirección visible -->
+        <section class="py-12 md:py-16">
+            <div class="container mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">
+                <div class="space-y-4 md:space-y-6 text-center md:text-left">
+                    <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-2 text-white glossy-text">
+                        Más que un postre,<br>una experiencia VALÚ.
+                    </h1>
+                    <p class="text-lg md:text-xl max-w-xl mx-auto md:mx-0 text-gray-200">
+                        Tu rincón dulce en Shushufindi. Chocobananas con personalidad propia, en un ambiente que huele delicioso.
+                    </p>
+                    <div class="bg-white/95 rounded-2xl shadow-lg p-4 inline-block text-left">
+                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">
+                            Nuestra ubicación
+                        </p>
+                        <p class="text-sm text-gray-700">
+                            <i class="fas fa-map-marker-alt text-brand-orange mr-2"></i>
+                            Siona y 7 de agosto, Shushufindi, Ecuador
+                        </p>
+                        <a href="https://maps.app.goo.gl/ZjvLQER2vHgL6kSQ6" target="_blank"
+                           class="mt-2 inline-flex items-center gap-2 text-xs font-semibold text-brand-green hover:text-brand-orange transition-colors">
+                            Abrir en Google Maps <i class="fas fa-arrow-up-right-from-square"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="flex justify-center">
+                    <div class="bg-white rounded-3xl shadow-2xl overflow-hidden border-4 border-brand-orange/70 max-w-md w-full">
+                        <img src="https://i.postimg.cc/htnht0Qv/504974765-1058337899724199-7091260268685360836-n.webp"
+                             alt="Local de VALÚ Chocobananas"
+                             class="w-full h-72 md:h-80 object-cover"
+                             onerror="this.onerror=null;this.src='https://placehold.co/600x400/FFF3E0/3D2B1F?text=VALÚ';">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="productos" class="py-16">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold mb-12 text-center text-white" style="text-shadow: 2px 2px 8px rgba(0,0,0,0.5);">Nuestros Sabores</h2>
+                <div id="product-list" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
+                    <!-- Product cards will be injected here by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <section id="experiencia" class="pb-16">
+            <div class="container mx-auto px-6">
+                <div class="bg-white rounded-2xl shadow-xl p-8 md:p-12 md:flex items-center gap-12">
+                    <div class="md:w-1/2 mb-8 md:mb-0">
+                        <img src="https://i.postimg.cc/htnht0Qv/504974765-1058337899724199-7091260268685360836-n.webp" alt="Interior del local de VALÚ Chocobananas" class="rounded-lg shadow-lg w-full h-auto" onerror="this.onerror=null;this.src='https://placehold.co/600x400/FFF3E0/3D2B1F?text=Local';">
+                    </div>
+                    <div class="md:w-1/2">
+                        <h2 class="text-3xl font-bold mb-4 brand-green-text">Nuestra Experiencia <span class="brand-orange-text">VALÚ</span></h2>
+                        <p class="mb-4 text-gray-600">Tu rincón favorito en el corazón de Shushufindi. Nacimos para convertir un postre clásico en una experiencia inolvidable. Nos enorgullece ofrecerte la más amplia y deliciosa carta de chocobananas que puedas imaginar.</p>
+                        <p class="text-gray-600">Más que solo un producto, queremos que te sientas como en casa. Por eso, hemos creado un espacio amplio, confortable y con un ambiente súper acogedor. ¡Somos el punto de encuentro perfecto para todos los "Valú Lovers"!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PUZZLE / TETRIS VALÚ -->
+        <section id="puzzle-valu" class="py-12 bg-black/40 border-t border-white/10">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-8">
+                    <p class="text-xs tracking-[0.3em] uppercase text-brand-orange mb-2 font-semibold">
+                        Juego VALÚ
+                    </p>
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-2">
+                        Juega mientras esperas tu pedido 🍌🎮
+                    </h2>
+                    <p class="text-sm md:text-base text-gray-200 max-w-2xl mx-auto">
+                        Haz líneas, suma puntos y pasa el tiempo mientras preparamos tus chocobananas.  
+                        Ideal para Valú Lovers impacientes 😋
+                    </p>
+                </div>
+
+                <div class="max-w-md mx-auto bg-white/95 rounded-3xl shadow-2xl p-5 md:p-6">
+                    <div class="flex items-center justify-between gap-4 text-xs md:text-sm text-gray-700 mb-3">
+                        <span class="flex items-center gap-2">
+                            <i class="fa-solid fa-star text-brand-orange"></i>
+                            Puntos: <span id="tetris-score">0</span>
+                        </span>
+                        <span class="flex items-center gap-2">
+                            <i class="fa-solid fa-layer-group text-brand-green"></i>
+                            Filas: <span id="tetris-lines">0</span>
+                        </span>
+                        <button id="tetris-restart" type="button"
+                                class="px-4 py-2 bg-brand-orange text-white rounded-full text-xs md:text-sm font-semibold flex items-center gap-2 hover:bg-brand-orange-dark transition">
+                            <i class="fa-solid fa-rotate-right"></i> Jugar / Reiniciar
+                        </button>
+                    </div>
+
+                    <canvas id="tetris-canvas" width="300" height="480" class="border border-emerald-700"></canvas>
+
+                    <div class="flex flex-wrap justify-center gap-2 w-full mt-3">
+                        <button id="tetris-left" type="button"
+                                class="px-4 py-2 rounded-full bg-brand-green text-white text-lg hover:bg-[#145a1a]">⬅️</button>
+                        <button id="tetris-rotate" type="button"
+                                class="px-4 py-2 rounded-full bg-brand-green text-white text-lg hover:bg-[#145a1a]">🔄</button>
+                        <button id="tetris-down" type="button"
+                                class="px-4 py-2 rounded-full bg-brand-green text-white text-lg hover:bg-[#145a1a]">⬇️</button>
+                        <button id="tetris-right" type="button"
+                                class="px-4 py-2 rounded-full bg-brand-green text-white text-lg hover:bg-[#145a1a]">➡️</button>
+                    </div>
+
+                    <p class="text-[10px] md:text-xs text-gray-600 text-center mt-2">
+                        En celular: toca <strong>izquierda / derecha</strong> del juego para mover,  
+                        arriba para <strong>girar</strong> y el centro para <strong>bajar</strong>.  
+                        O usa los botones de abajo.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- CHECKOUT PAGE (CON MESA / DOMICILIO) -->
+    <main id="checkout-page" class="hidden relative z-10 py-16">
+        <div class="container mx-auto px-6">
+            <h2 class="text-4xl text-center text-white glossy-text mb-12">Finalizar Pedido</h2>
+
+            <div id="cart-empty-message" class="hidden text-center py-12 bg-white/90 rounded-2xl max-w-xl mx-auto">
+                <i class="fas fa-shopping-cart text-gray-300 text-6xl mb-4"></i>
+                <p class="text-gray-500 text-xl">Tu carrito está vacío.</p>
+                <button onclick="showPage('home')" class="mt-6 bg-brand-orange text-white text-lg font-semibold py-3 px-8 rounded-full hover:bg-brand-orange-dark">
+                    Ver Productos
+                </button>
+            </div>
+
+            <div id="cart-content" class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <!-- Modalidad + Datos -->
+                <div>
+                    <h3 class="text-2xl text-white mb-5">1. Modalidad y Datos</h3>
+
+                    <!-- Radios mesa / domicilio -->
+                    <div class="mb-6">
+                        <div class="flex flex-col sm:flex-row gap-3">
+                            <label class="flex items-center bg-white/95 p-3 rounded-xl border border-brand-green/60 cursor-pointer flex-1 transition hover:bg-white">
+                                <input
+                                    type="radio"
+                                    name="orderType"
+                                    value="dineIn"
+                                    checked
+                                    class="mr-3 text-brand-orange focus:ring-brand-orange border-gray-300"
+                                    id="radio-dine-in">
+                                <span class="font-bold text-gray-800 text-sm md:text-base">
+                                    <i class="fas fa-utensils mr-2 text-brand-orange"></i>
+                                    Servir en mesa
+                                </span>
+                            </label>
+                            <label class="flex items-center bg-white/95 p-3 rounded-xl border border-brand-green/60 cursor-pointer flex-1 transition hover:bg-white">
+                                <input
+                                    type="radio"
+                                    name="orderType"
+                                    value="delivery"
+                                    class="mr-3 text-brand-orange focus:ring-brand-orange border-gray-300"
+                                    id="radio-delivery">
+                                <span class="font-bold text-gray-800 text-sm md:text-base">
+                                    <i class="fas fa-motorcycle mr-2 text-brand-orange"></i>
+                                    Entrega a domicilio
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <form id="order-form" class="space-y-4">
+                        <!-- Campos para mesa -->
+                        <div id="dine-in-fields" class="bg-white p-6 rounded-lg shadow-md text-gray-800">
+                            <div class="mb-4">
+                                <label for="table-number" class="block text-gray-700 font-bold mb-2">
+                                    Número de mesa
+                                </label>
+                                <input
+                                    type="number"
+                                    id="table-number"
+                                    name="table-number"
+                                    class="w-full px-3 py-2 border rounded-lg focus:ring-brand-orange focus:border-brand-orange text-sm"
+                                    placeholder="Ej: 5"
+                                    min="1"
+                                    required>
+                            </div>
+                            <div>
+                                <label for="client-name-local" class="block text-gray-700 font-bold mb-2">
+                                    Nombre (opcional)
+                                </label>
+                                <input
+                                    type="text"
+                                    id="client-name-local"
+                                    name="client-name-local"
+                                    class="w-full px-3 py-2 border rounded-lg focus:ring-brand-orange focus:border-brand-orange text-sm"
+                                    placeholder="Tu nombre">
+                            </div>
+                        </div>
+
+                        <!-- Campos para domicilio -->
+                        <div id="delivery-fields" class="bg-white p-6 rounded-lg shadow-md text-gray-800 hidden">
+                            <div class="mb-3">
+                                <label for="name" class="block text-gray-700 font-bold mb-2">
+                                    Nombre Completo
+                                </label>
+                                <input
+                                    type="text"
+                                    id="name"
+                                    name="name"
+                                    class="w-full px-3 py-2 border rounded-lg focus:ring-brand-orange focus:border-brand-orange text-sm"
+                                    placeholder="Tu nombre"
+                                    required
+                                    disabled>
+                            </div>
+                            <div class="mb-3">
+                                <label for="phone" class="block text-gray-700 font-bold mb-2">
+                                    Número de WhatsApp
+                                </label>
+                                <input
+                                    type="tel"
+                                    id="phone"
+                                    name="phone"
+                                    class="w-full px-3 py-2 border rounded-lg focus:ring-brand-orange focus:border-brand-orange text-sm"
+                                    placeholder="Ej: 0999999999"
+                                    required
+                                    disabled>
+                            </div>
+                            <div class="mb-3">
+                                <label for="address" class="block text-gray-700 font-bold mb-2">
+                                    Dirección de Entrega
+                                </label>
+                                <textarea
+                                    id="address"
+                                    name="address"
+                                    rows="3"
+                                    class="w-full px-3 py-2 border rounded-lg focus:ring-brand-orange focus:border-brand-orange text-sm resize-none"
+                                    placeholder="Calle, barrio, referencia..."
+                                    required
+                                    disabled></textarea>
+                            </div>
+                            <div class="mb-3">
+                                <button
+                                    type="button"
+                                    id="share-location-btn-checkout"
+                                    class="w-full bg-blue-500 text-white text-sm font-bold py-2.5 px-4 rounded-full hover:bg-blue-600 transition-colors flex items-center justify-center gap-2 disabled:opacity-60"
+                                    disabled>
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    Compartir ubicación (opcional)
+                                </button>
+                                <p id="location-status-checkout" class="text-xs text-center text-green-600 font-semibold mt-2"></p>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Resumen + Pago -->
+                <div>
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-2xl text-white">2. Resumen de tu Pedido</h3>
+                        <button id="clear-cart-btn" title="Vaciar Carrito" type="button" class="text-red-300 hover:text-white text-sm font-semibold">Vaciar Carrito</button>
+                    </div>
+                    <div id="checkout-summary" class="bg-white p-6 rounded-lg shadow-md">
+                        <!-- El resumen del carrito se insertará aquí -->
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md mt-8">
+                        <h3 class="text-xl text-gray-700 mb-4 font-bold">Información de Pago</h3>
+                        <div class="bg-blue-50 border border-blue-200 text-blue-800 p-3 rounded-lg text-sm">
+                            <p><strong>Banco:</strong> Banco Pichincha</p>
+                            <p><strong>Cuenta de Ahorros:</strong> 2208394961</p>
+                            <p><strong>A nombre de:</strong> Monica Ruilova</p>
+                            <p><strong>C.I:</strong> 0921738837</p>
+                        </div>
+                        <p class="mt-2 text-[11px] text-gray-500">
+                            *Adjunta el comprobante por WhatsApp al confirmar tu pedido.
+                        </p>
+                    </div>
+                    <button type="submit" form="order-form" id="submit-order-btn" class="w-full bg-brand-orange text-white text-lg font-semibold py-3 rounded-full mt-8 hover:bg-brand-orange-dark transition-colors flex items-center justify-center gap-2">
+                        <i class="fab fa-whatsapp"></i> Enviar pedido por WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer id="footer-contact" class="bg-gray-900/80 text-gray-300 pt-12 pb-8 mt-16 border-t border-white/10 relative z-10">
+        <div class="container mx-auto px-6 text-center">
+             <div class="grid md:grid-cols-3 gap-8">
+                <div class="mb-6 md:mb-0">
+                    <h4 class="font-bold text-lg mb-2 text-white">Contacto</h4>
+                    <a href="https://wa.me/593963829892" target="_blank" class="inline-block hover:text-white transition-colors"><i class="fab fa-whatsapp mr-2"></i> +593 96 382 9892</a>
+                    <p class="mt-2"><i class="fas fa-envelope mr-2"></i> valuchocobananas@gmail.com</p>
+                </div>
+                <div class="mb-6 md:mb-0">
+                    <h4 class="font-bold text-lg mb-2 text-white">Ubicación</h4>
+                    <a href="https://maps.app.goo.gl/ZjvLQER2vHgL6kSQ6" target="_blank" class="inline-block hover:text-white transition-colors">
+                        <i class="fas fa-map-marker-alt mr-2"></i> Siona y 7 de agosto
+                    </a>
+                    <p>Shushufindi, Ecuador</p>
+                </div>
+                <div class="mb-6 md:mb-0">
+                    <h4 class="font-bold text-lg mb-2 text-white">Horario</h4>
+                    <p>Lunes a Sábado</p>
+                    <p>3:00 PM - 7:30 PM</p>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-white/20 text-sm text-white/70">
+                <p>&copy; 2024 VALÚ Chocobananas. Todos los derechos reservados.</p>
+                <div class="mt-4">
+                    <p class="text-xs text-white/50">
+                        Te gustaría tener una página como esta, dale clic aquí ➤ 
+                        <a href="https://wa.me/593983397264?text=Hola%20Bot%20&%20Landing,%20estoy%20interesado%20en%20una%20página%20web%20como%20la%20de%20VALÚ%20Chocobananas." target="_blank" class="font-bold text-white/70 hover:text-white transition-colors">
+                            Bot & Landing
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Confirmation Modal -->
+    <div id="notification-modal" class="fixed inset-0 bg-black/60 z-[1002] flex items-center justify-center p-4 transition-opacity duration-300 opacity-0 pointer-events-none">
+        <div class="bg-white rounded-xl p-8 text-center shadow-2xl max-w-sm transform scale-95 transition-transform duration-300">
+            <i class="fas fa-check-circle text-green-500 text-5xl mb-4"></i>
+            <h2 id="notification-message" class="text-xl font-bold brand-brown-text"></h2>
+            <button id="close-notification-btn" class="mt-6 bg-brand-green text-white font-bold py-2 px-6 rounded-full">Entendido</button>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const products = [
+            // $1.00
+            { id: 1, name: 'Clasica Negra', price: 1.00, img: 'https://i.postimg.cc/xdfT7hRY/IMG_20250809_164333_148_2-removebg-preview.webp', desc: 'Nuestra clásica Chocobanana bañada en doble capa de chocolate negro intenso.' },
+            // $1.00
+            { id: 2, name: 'Clasica Blanca', price: 1.00, img: 'https://i.postimg.cc/Hkrt41Sw/1000670553-removebg-preview.webp', desc: 'Nuestra clásica banana cubierta de chocolate blanco cremoso, suave y delicioso, ideal para quienes aman lo dulce y delicado' },
+            // $1.25
+            { id: 3, name: 'Galleta Tángo', price: 1.25, img: 'https://i.postimg.cc/vBrgL0FL/1000670549-removebg-preview-1.webp', desc: 'Banana cubierta con chocolate negro, y topping de galleta tango con crema de vainilla triturada, una combinación irresistible' },
+            { id: 4, name: 'Chile CH. Negro', price: 1.25, img: 'https://i.postimg.cc/Kz2r2kmf/1000670552-removebg-preview.webp', desc: 'Banana bañada en chocolate negro, decorada con palitos dulces turquesa, grageas crujientes, coronada con una bolita de chicle al final' },
+            { id: 5, name: 'Chicle CH. Turquesa', price: 1.25, img: 'https://i.postimg.cc/76n1YH6k/1000670555-removebg-preview.webp', desc: 'Banana cubierta con chocolate turquesa con una bolita de chicle al final' },
+            { id: 6, name: 'Galleta Oreo', price: 1.25, img: 'https://i.postimg.cc/rygGBw3G/IMG-20250809-170227-751-2-removebg-preview.webp', desc: 'Banana bañada en chocolate, cubierta con crujientes galletas oreo. Dulce, crujiente y deliciosa que te hará caer en la tentación.”' },
+            { id: 7, name: 'Valú Fresa', price: 1.25, img: 'https://i.postimg.cc/j2qHDpwJ/1000670557-removebg-preview.webp', desc: 'Nuestra Chocobanana bañada en chocolate rojo, con auténtico sabor a fresa. Dulzura y frescura en perfecta armonía.' },
+            { id: 8, name: 'Maní', price: 1.25, img: 'https://i.postimg.cc/VL69mcPx/IMG-20250809-165122-573-2-removebg-preview.webp', desc: 'banana bañada en chocolate negro y cubierta con maní triturado ligeramente salado.' },
+            { id: 9, name: 'Grajeas', price: 1.25, img: 'https://i.postimg.cc/VLVqNHYd/IMG-20250809-171929-053-2-removebg-preview.webp', desc: 'Banana bañada en chocolate negro y cubierta con crujientes grageas anisadas de colores. Dulce, divertida y llena de sabor.' },
+            { id: 10, name: 'Valú Tropi coco', price: 1.25, img: 'https://i.postimg.cc/CMJc3QV7/1000670548-removebg-preview.webp', desc: 'Banana cubierta con chocolate negro y un baño extremo de coco seco rallado' },
+            { id: 11, name: 'Valú pops', price: 1.25, img: 'https://i.postimg.cc/gjr3F4vt/1000670559-removebg-preview.webp', desc: 'Es la mezcla perfecta del chocolate blanco con caramelos en polvo que explotan tu boca' },
+            // $1.50
+            { id: 12, name: 'Chin Chin', price: 1.50, img: 'https://i.postimg.cc/nrdvB3BS/1000670562-removebg-preview.webp', desc: 'Banana bañada en chocolate negro con crujientes lentejas de colores, una explosión de color y sabor que te encantará' },
+            { id: 13, name: 'Valú Mixta', price: 1.50, img: 'https://i.postimg.cc/wBJcZcY3/1000670551-removebg-preview.webp', desc: 'Banana bañada en chocolate verde, con crujientes trozos de Oreo y un toque fresco de menta. ¡Refrescante, dulce y divertida, que te dejará congelado' },
+            { id: 14, name: 'Valú black&white', price: 1.50, img: 'https://i.postimg.cc/BnRBm7yd/1000670554-removebg-preview.webp', desc: 'Banana cubierta con chocolate blanco y trozos crocantes de galleta oreo' },
+            // $2.50
+            { id: 15, name: 'Rellena de Coctel de Café', price: 2.50, img: 'https://i.postimg.cc/9Qq5FhmC/1000670556-removebg-preview-1.webp', desc: 'Banana bañada en chocolate, rellena con exquisito cóctel de café y acompañada de crujientes nibs de café. Dulce, cremoso y sofisticado, ideal para los amantes del café y el chocolate' },
+            { id: 16, name: 'Rellena de manjar y almendras', price: 2.50, img: 'https://i.postimg.cc/tgtcYRLQ/1000670558-removebg-preview.webp', desc: 'banana bañada en chocolate y rellena con cremoso manjar y trozos de almendra. Dulce, crujiente y sofisticada, una experiencia irresistible para los paladares más exigentes.' },
+        ];
+
+        // DOM Elements
+        const productList = document.getElementById('product-list');
+        const cartCountEl = document.getElementById('cart-count');
+        const notificationModal = document.getElementById('notification-modal');
+        const notificationMessage = document.getElementById('notification-message');
+        const closeNotificationBtn = document.getElementById('close-notification-btn');
+        const orderForm = document.getElementById('order-form');
+        const checkoutSummary = document.getElementById('checkout-summary');
+        const clearCartBtn = document.getElementById('clear-cart-btn');
+        const cartEmptyMessage = document.getElementById('cart-empty-message');
+        const cartContent = document.getElementById('cart-content');
+        const shareLocationBtn = document.getElementById('share-location-btn-checkout');
+        const locationStatus = document.getElementById('location-status-checkout');
+
+        const dineInFields   = document.getElementById('dine-in-fields');
+        const deliveryFields = document.getElementById('delivery-fields');
+        const radioDineIn    = document.getElementById('radio-dine-in');
+        const radioDelivery  = document.getElementById('radio-delivery');
+
+        const nameInput            = document.getElementById('name');
+        const phoneInput           = document.getElementById('phone');
+        const addressInput         = document.getElementById('address');
+        const tableNumberInput     = document.getElementById('table-number');
+        const clientNameLocalInput = document.getElementById('client-name-local');
+
+        // App State
+        let cart = {};
+        let sharedLocation = null;
+        let orderType = 'dineIn';
+
+        // Helpers
+        function setInputRequired(input, isRequired) {
+            if (!input) return;
+            input.required = isRequired;
+            input.disabled = !isRequired;
+        }
+
+        // RENDER de productos (manteniendo diseño VALÚ)
+        function renderProducts() {
+            productList.innerHTML = '';
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-xl text-center overflow-hidden flex flex-col shadow-lg transition-all duration-300 ease-in-out hover:shadow-2xl hover:scale-105 hover:-translate-y-2';
+                card.innerHTML = `
+                    <div class="bg-gray-50">
+                        <img src="${product.img}" alt="${product.name}" class="w-full h-56 object-contain" onerror="this.onerror=null;this.src='https://placehold.co/400x224/ffffff/3D2B1F?text=${product.name}';">
+                    </div>
+                    <div class="p-6 flex-grow flex flex-col">
+                        <h3 class="text-xl font-bold mb-2 brand-brown-text">${product.name}</h3>
+                        <p class="text-sm flex-grow text-gray-600">${product.desc}</p>
+                        <p class="font-bold brand-orange-text mt-2 text-lg">$${product.price.toFixed(2)}</p>
+                        <div class="flex items-center justify-center space-x-4 my-4">
+                            <button class="quantity-btn minus-btn bg-gray-200 rounded-full w-8 h-8 text-lg font-bold text-gray-700">-</button>
+                            <span class="quantity-value text-lg font-bold">1</span>
+                            <button class="quantity-btn plus-btn bg-gray-200 rounded-full w-8 h-8 text-lg font-bold text-gray-700">+</button>
+                        </div>
+                        <button class="add-to-cart-btn bg-brand-green text-white font-bold py-2 px-4 rounded-full hover:bg-brand-green-dark transition-colors" data-id="${product.id}">
+                            Añadir al Carrito
+                        </button>
+                    </div>
+                `;
+                productList.appendChild(card);
+            });
+        }
+
+        function updateCartUI() {
+            let totalItems = Object.values(cart).reduce((sum, item) => sum + item.quantity, 0);
+            cartCountEl.textContent = totalItems;
+            updateCheckoutPage();
+        }
+
+        function updateCheckoutPage() {
+            const checkoutPage = document.getElementById('checkout-page');
+            if (checkoutPage.classList.contains('hidden')) return;
+
+            if (Object.keys(cart).length === 0) {
+                cartEmptyMessage.classList.remove('hidden');
+                cartContent.classList.add('hidden');
+                checkoutSummary.innerHTML = `
+                    <p class="text-gray-500 text-sm">
+                        Aún no has agregado productos a tu pedido.
+                    </p>
+                `;
+                return;
+            }
+
+            cartEmptyMessage.classList.add('hidden');
+            cartContent.classList.remove('hidden');
+
+            let subtotal = 0;
+            let summaryHTML = '';
+
+            for (const id in cart) {
+                const item = cart[id];
+                const itemSubtotal = item.price * item.quantity;
+                subtotal += itemSubtotal;
+                summaryHTML += `
+                    <div class="py-2 border-b last:border-b-0 flex justify-between items-center">
+                        <div>
+                            <p class="font-bold">${item.quantity} x ${item.name}</p>
+                        </div>
+                        <span class="font-semibold">$${itemSubtotal.toFixed(2)}</span>
+                    </div>
+                `;
+            }
+
+            summaryHTML += `
+                <div class="mt-4 border-t pt-4 space-y-2">
+                    <div class="flex justify-between"><span>Subtotal</span><span>$${subtotal.toFixed(2)}</span></div>
+                    <div class="flex justify-between font-bold text-lg"><span>Total</span><span>$${subtotal.toFixed(2)}</span></div>
+                </div>
+            `;
+            checkoutSummary.innerHTML = summaryHTML;
+        }
+
+        function addToCart(productId, quantity = 1) {
+            if (cart[productId]) {
+                cart[productId].quantity += quantity;
+            } else {
+                const product = products.find(p => p.id == productId);
+                if (!product) return;
+                cart[productId] = { ...product, quantity: quantity };
+            }
+            updateCartUI();
+        }
+
+        // Cambio de modalidad
+        function handleOrderTypeChange() {
+            orderType = document.querySelector('input[name="orderType"]:checked').value;
+
+            sharedLocation = null;
+            if (locationStatus) locationStatus.textContent = '';
+            if (shareLocationBtn) shareLocationBtn.disabled = (orderType === 'dineIn');
+
+            if (orderType === 'dineIn') {
+                dineInFields.classList.remove('hidden');
+                deliveryFields.classList.add('hidden');
+
+                setInputRequired(tableNumberInput, true);
+                setInputRequired(nameInput, false);
+                setInputRequired(phoneInput, false);
+                setInputRequired(addressInput, false);
+            } else {
+                dineInFields.classList.add('hidden');
+                deliveryFields.classList.remove('hidden');
+
+                setInputRequired(tableNumberInput, false);
+                setInputRequired(nameInput, true);
+                setInputRequired(phoneInput, true);
+                setInputRequired(addressInput, true);
+            }
+        }
+
+        // EVENTOS productos
+        productList.addEventListener('click', (e) => {
+            const card = e.target.closest('.flex-col');
+            if (!card) return;
+
+            if (e.target.classList.contains('quantity-btn')) {
+                const valueSpan = card.querySelector('.quantity-value');
+                let currentValue = parseInt(valueSpan.textContent);
+                if (e.target.classList.contains('plus-btn')) currentValue++;
+                else if (e.target.classList.contains('minus-btn') && currentValue > 1) currentValue--;
+                valueSpan.textContent = currentValue;
+            }
+
+            if (e.target.classList.contains('add-to-cart-btn')) {
+                const id = e.target.dataset.id;
+                const quantity = parseInt(card.querySelector('.quantity-value').textContent);
+                addToCart(id, quantity);
+                const product = products.find(p => p.id == id);
+                showNotification(`${quantity} ${product ? product.name : 'producto'}(s) añadido(s) al carrito!`);
+                card.querySelector('.quantity-value').textContent = '1';
+            }
+        });
+
+        // Vaciar carrito
+        clearCartBtn.addEventListener('click', () => {
+            cart = {};
+            updateCartUI();
+            showNotification('El carrito ha sido vaciado.');
+        });
+
+        // Cambio de radio
+        radioDineIn.addEventListener('change', handleOrderTypeChange);
+        radioDelivery.addEventListener('change', handleOrderTypeChange);
+
+        // Geolocalización
+        if (shareLocationBtn) {
+            shareLocationBtn.addEventListener('click', () => {
+                if (!navigator.geolocation) {
+                    locationStatus.textContent = 'Geolocalización no es soportada.';
+                    return;
+                }
+                locationStatus.textContent = 'Obteniendo ubicación...';
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const { latitude, longitude } = position.coords;
+                        sharedLocation = `https://www.google.com/maps?q=${latitude},${longitude}`;
+                        locationStatus.textContent = '¡Ubicación compartida!';
+                    },
+                    () => {
+                        locationStatus.textContent = 'No se pudo obtener la ubicación.';
+                    }
+                );
+            });
+        }
+
+        // Enviar pedido
+        orderForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            if (Object.keys(cart).length === 0) {
+                alert('Tu carrito está vacío. Agrega productos antes de enviar tu pedido.');
+                return;
+            }
+
+            const currentOrderType = document.querySelector('input[name="orderType"]:checked').value;
+
+            let message = `¡Hola VALÚ Chocobananas! 🍌✨ Quisiera hacer el siguiente pedido:\n\n`;
+            let total = 0;
+
+            for (const id in cart) {
+                const item = cart[id];
+                message += `• ${item.quantity}x - ${item.name}\n`;
+                total += item.price * item.quantity;
+            }
+
+            message += `\n*Total aproximado: $${total.toFixed(2)}*\n\n`;
+
+            if (currentOrderType === 'dineIn') {
+                const mesa = (tableNumberInput.value || '').trim();
+                const nombreLocal = (clientNameLocalInput.value || '').trim();
+
+                if (!mesa) {
+                    showNotification('Por favor, ingresa tu número de mesa.');
+                    return;
+                }
+
+                message += `*Modalidad:* Servir en mesa 🍽️\n`;
+                message += `*Mesa:* ${mesa}\n`;
+                if (nombreLocal) {
+                    message += `*Nombre:* ${nombreLocal}\n`;
+                }
+            } else {
+                const name = (nameInput.value || '').trim();
+                const phone = (phoneInput.value || '').trim();
+                const address = (addressInput.value || '').trim();
+
+                if (!name || !phone || !address) {
+                    showNotification('Para domicilio, completa Nombre, WhatsApp y Dirección.');
+                    return;
+                }
+
+                message += `*Modalidad:* Entrega a domicilio 🛵\n`;
+                message += `*Nombre:* ${name}\n`;
+                message += `*WhatsApp:* ${phone}\n`;
+                message += `*Dirección:* ${address}\n`;
+                if (sharedLocation) {
+                    message += `*Ubicación (Google Maps):* ${sharedLocation}\n`;
+                } else {
+                    message += `*Ubicación:* No enviada (puedo enviar luego por chat).\n`;
+                }
+            }
+
+            message += `\n*IMPORTANTE:* Para confirmar tu pedido, por favor adjunta tu comprobante de pago aquí en el chat. 💳📸`;
+            message += `\n\n¡Espero su confirmación! Gracias. 😊`;
+
+            const whatsappNumber = '593983397264';
+            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+
+            window.open(whatsappUrl, '_blank');
+
+            cart = {};
+            sharedLocation = null;
+            orderForm.reset();
+            handleOrderTypeChange();
+            updateCartUI();
+            showPage('home');
+            showNotification('¡Pedido enviado! Revisa tu WhatsApp para la confirmación de VALÚ Chocobananas.');
+        });
+
+        // Navegación entre páginas
+        const pages = document.querySelectorAll('main');
+        window.showPage = (pageId) => {
+            pages.forEach(page => page.classList.add('hidden'));
+            document.getElementById(`${pageId}-page`).classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            if (pageId === 'checkout') updateCheckoutPage();
+        };
+
+        // Notificación
+        function showNotification(message) {
+            notificationMessage.textContent = message;
+            notificationModal.classList.remove('opacity-0', 'pointer-events-none');
+            notificationModal.querySelector('div').classList.remove('scale-95');
+        }
+
+        function hideNotification() {
+            notificationModal.classList.add('opacity-0', 'pointer-events-none');
+            notificationModal.querySelector('div').classList.add('scale-95');
+        }
+
+        closeNotificationBtn.addEventListener('click', hideNotification);
+        notificationModal.addEventListener('click', (e) => {
+            if (e.target === notificationModal) hideNotification();
+        });
+
+        // Inicializar
+        renderProducts();
+        updateCartUI();
+        handleOrderTypeChange();
+    });
+    </script>
+
+    <!-- SCRIPT TETRIS / PUZZLE -->
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const canvas  = document.getElementById("tetris-canvas");
+      const scoreEl = document.getElementById("tetris-score");
+      const linesEl = document.getElementById("tetris-lines");
+      const restart = document.getElementById("tetris-restart");
+
+      const btnLeft   = document.getElementById("tetris-left");
+      const btnRight  = document.getElementById("tetris-right");
+      const btnRotate = document.getElementById("tetris-rotate");
+      const btnDown   = document.getElementById("tetris-down");
+
+      if (!canvas || !scoreEl || !linesEl || !restart) return;
+
+      const ctx = canvas.getContext("2d");
+
+      const COLS  = 10;
+      const ROWS  = 20;
+      const BLOCK = 24;
+
+      canvas.width  = COLS * BLOCK;
+      canvas.height = ROWS * BLOCK;
+
+      const COLORS = [
+        null,
+        "#f97316",
+        "#22c55e",
+        "#3b82f6",
+        "#eab308",
+        "#ec4899",
+        "#8b5cf6",
+        "#facc15",
+      ];
+
+      const SHAPES = {
+        I: [[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]],
+        J: [[2,0,0],[2,2,2],[0,0,0]],
+        L: [[0,0,3],[3,3,3],[0,0,0]],
+        O: [[4,4],[4,4]],
+        S: [[0,5,5],[5,5,0],[0,0,0]],
+        T: [[0,6,0],[6,6,6],[0,0,0]],
+        Z: [[7,7,0],[0,7,7],[0,0,0]],
+      };
+
+      function matrix(w, h) {
+        return Array.from({ length: h }, () => Array(w).fill(0));
+      }
+
+      let board = matrix(COLS, ROWS);
+      let piece = null;
+      let pos   = null;
+      let drop  = 0;
+      let last  = 0;
+      let score = 0;
+      let lines = 0;
+      let over  = false;
+
+      function randomPiece() {
+        const keys = Object.keys(SHAPES);
+        const shape = SHAPES[keys[(Math.random()*keys.length)|0]];
+        return shape.map(r => [...r]);
+      }
+
+      function resetPiece() {
+        piece = randomPiece();
+        pos = { x: (COLS/2 | 0) - (piece[0].length/2 | 0), y: 0 };
+        if (collide()) over = true;
+      }
+
+      function collide() {
+        for (let y=0; y<piece.length; y++){
+          for (let x=0; x<piece[y].length; x++){
+            if (piece[y][x] !== 0){
+              const nx = pos.x + x;
+              const ny = pos.y + y;
+
+              if (nx < 0 || nx >= COLS || ny >= ROWS || board[ny][nx] !== 0) {
+                return true;
+              }
+            }
+          }
+        }
+        return false;
+      }
+
+      function merge() {
+        for (let y=0; y<piece.length; y++){
+          for (let x=0; x<piece[y].length; x++){
+            if (piece[y][x] !== 0) {
+              board[pos.y + y][pos.x + x] = piece[y][x];
+            }
+          }
+        }
+      }
+
+      function rotate(m) {
+        return m[0].map((_, i) => m.map(r => r[i]).reverse());
+      }
+
+      function rotatePiece() {
+        const r = rotate(piece);
+        const prev = piece;
+        piece = r;
+        if (collide()) piece = prev;
+      }
+
+      function clearLines() {
+        let cleared = 0;
+
+        outer: for (let y = ROWS - 1; y >= 0; y--) {
+          for (let x = 0; x < COLS; x++){
+            if (board[y][x] === 0) continue outer;
+          }
+          board.splice(y, 1);
+          board.unshift(Array(COLS).fill(0));
+          cleared++;
+          y++;
+        }
+
+        if (cleared > 0){
+          lines += cleared;
+          score += [0,100,250,500,800][cleared];
+          scoreEl.textContent = score;
+          linesEl.textContent = lines;
+        }
+      }
+
+      function draw() {
+        ctx.fillStyle = "#0f172a";
+        ctx.fillRect(0,0,canvas.width, canvas.height);
+
+        for (let y=0; y<ROWS; y++){
+          for (let x=0; x<COLS; x++){
+            drawBlock(x,y,board[y][x]);
+          }
+        }
+
+        if (piece) {
+          for (let y=0; y<piece.length; y++){
+            for (let x=0; x<piece[y].length; x++){
+              if (piece[y][x] !== 0){
+                drawBlock(x+pos.x, y+pos.y, piece[y][x]);
+              }
+            }
+          }
+        }
+      }
+
+      function drawBlock(x,y,colorIndex){
+        if (!colorIndex) return;
+        ctx.fillStyle = COLORS[colorIndex];
+        ctx.fillRect(x*BLOCK, y*BLOCK, BLOCK, BLOCK);
+        ctx.strokeStyle = "black";
+        ctx.strokeRect(x*BLOCK, y*BLOCK, BLOCK, BLOCK);
+      }
+
+      function fall(time=0) {
+        if (over){
+          draw();
+          return;
+        }
+        const delta = time - last;
+        last = time;
+        drop += delta;
+
+        if (drop > 500) {
+          pos.y++;
+          if (collide()) {
+            pos.y--;
+            merge();
+            clearLines();
+            resetPiece();
+          }
+          drop = 0;
+        }
+
+        draw();
+        requestAnimationFrame(fall);
+      }
+
+      function moveLeft() {
+        if (!piece || over) return;
+        pos.x--;
+        if (collide()) pos.x++;
+      }
+
+      function moveRight() {
+        if (!piece || over) return;
+        pos.x++;
+        if (collide()) pos.x--;
+      }
+
+      function softDrop() {
+        if (!piece || over) return;
+        pos.y++;
+        if (collide()) {
+          pos.y--;
+          merge();
+          clearLines();
+          resetPiece();
+        }
+        drop = 0;
+      }
+
+      document.addEventListener("keydown", e => {
+        if (!piece || over) return;
+
+        if (e.key === "ArrowLeft") {
+          moveLeft();
+        }
+        else if (e.key === "ArrowRight") {
+          moveRight();
+        }
+        else if (e.key === "ArrowDown") {
+          softDrop();
+        }
+        else if (e.key === "ArrowUp") {
+          rotatePiece();
+        }
+      });
+
+      if (btnLeft)   btnLeft.addEventListener("click", () => moveLeft());
+      if (btnRight)  btnRight.addEventListener("click", () => moveRight());
+      if (btnDown)   btnDown.addEventListener("click", () => softDrop());
+      if (btnRotate) btnRotate.addEventListener("click", () => rotatePiece());
+
+      function handleCanvasTap(clientX, clientY) {
+        if (!piece || over) return;
+
+        const rect = canvas.getBoundingClientRect();
+        const x = clientX - rect.left;
+        const y = clientY - rect.top;
+
+        const thirdW = rect.width / 3;
+        const topZone = rect.height * 0.3;
+
+        if (y < topZone) {
+          rotatePiece();
+          return;
+        }
+
+        if (x < thirdW) {
+          moveLeft();
+        } else if (x > 2 * thirdW) {
+          moveRight();
+        } else {
+          softDrop();
+        }
+      }
+
+      canvas.addEventListener("click", (e) => {
+        handleCanvasTap(e.clientX, e.clientY);
+      });
+
+      canvas.addEventListener("touchstart", (e) => {
+        const touch = e.touches[0];
+        if (!touch) return;
+        handleCanvasTap(touch.clientX, touch.clientY);
+      }, { passive: true });
+
+      restart.addEventListener("click", () => {
+        board = matrix(COLS, ROWS);
+        score = 0;
+        lines = 0;
+        over  = false;
+        scoreEl.textContent = "0";
+        linesEl.textContent = "0";
+        resetPiece();
+      });
+
+      resetPiece();
+      fall();
+    });
+    </script>
+</body>
+</html>
